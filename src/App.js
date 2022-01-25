@@ -2,7 +2,7 @@ import { useContext } from 'react'
 //components
 import Nav from './components/Nav'
 //contexts
-import UserContext from './contexts/UserContex';
+import UserContext from './contexts/UserContext';
 //css
 import './App.css';
 
