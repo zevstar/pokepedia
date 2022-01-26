@@ -1,69 +1,42 @@
+import { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import UserContext from '../../contexts/UserContext'
 
-import { useState} from "react";
-import { useNavigate } from "react-router-dom";
-import "./styles.css";
+const Nav = () => {
+    const user = useContext(UserContext)
+    // console.log('nav', user)
 
-const Login = ({ setUser }) => {
-  // Once the user clicks submit, we will mimic log in and conditionally render our nav bar.
+    // Below we will use Link from react router to replace all of our anchor tags. We replace the href from <a> to "to"
+    return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="container-fluid">
+                <Link className="navbar-brand" to="/">Pokepedia</Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <Link className="nav-link active" aria-current="page" to="pokemon/list">Pokemon List</Link>
+                        </li>
+                        {
+                            !user
+                                ?
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="login">Login</Link>
+                                </li>
+                                :
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="favorites">Favorites</Link>
+                                </li>
+                        }
 
-  const [username, setUsername] = useState('')
-  const navigate = useNavigate()
 
-  const handleChange = e => {
-      setUsername(e.target.value)
-  }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    );
+}
 
-  const handleSubmit = e => {
-      e.preventDefault()
-      setUser(username)
-      // We can use useNaviage from RR to redirect our users to a different component/ page.
-      // Do NOT FORGET the forward / in front of path of navigate.
-
-      navigate('/pokemon/list')
-  }
-
-//   console.log('props', props.setUser())
-  return (
-    <form className="mx-auto border p-2 m-2" id="login-form" onSubmit= {handleSubmit}>
-      <div className="mb-3">
-        <label htmlFor="exampleInputuser1" className="form-label">
-          Username
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="exampleInputuser1"
-          aria-describedby="userHelp"
-          value={username}
-          onChange={handleChange}
-        />
-        <div id="userHelp" className="form-text">
-          We will lie to you.
-        </div>
-      </div>
-      <div className="mb-3">
-        <label htmlFor="exampleInputPassword1" className="form-label">
-          Password
-        </label>
-        <input
-          type="password"
-          className="form-control"
-          id="exampleInputPassword1"
-        />
-      </div>
-      <div className="mb-3 form-check">
-        <input
-          type="checkbox"
-          className="form-check-input"
-          id="exampleCheck1"
-        />
-        
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
-    </form>
-  );
-};
-
-export default Login;
+export default Nav;
