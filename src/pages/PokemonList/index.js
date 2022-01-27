@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate'
 import axios from 'axios'
+import './styles.css'
 
 const PokemonList = ({ pokeList, itemsPerPage }) => {
     // console.log('props', pokeList)
@@ -28,6 +29,7 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
 
             // setCurrentPokemon(pokeList.slice(itemOffset, endOffset));
             // if(currentPokemon) currPagePokemon()
+            const length = pokeList.length ? pokeList.length : 1118
             setPageCount(Math.ceil(pokeList.length / itemsPerPage));
         } catch (error) {
             console.log(error)
@@ -45,7 +47,7 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
                 const response = await axios.get(url)
                 // console.log(response.data)
                 pokeArr.push(response.data)
-                setCurrentPokemon(pokeArr)
+                setCurrentPokemon(pokeArr.flat())
                 // console.log('POKE ARRAY', pokeArr)
             }))
 
@@ -56,16 +58,21 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
 
     const Pokemon = () => {
         return (
-            <>
+            <div id='pokemon-container'>
                 {
-                    pokeList &&
-                    pokeList.map(pokemon => (
-                        <div>
-                            {/* <h3>{pokemon.name}</h3> */}
+                    currentPokemon &&
+                    currentPokemon.map(pokemon => (
+                        <div className="card poke-card" key={pokemon.id}>
+                            <img src={pokemon.sprites.front_shiny} className="card-img-top" alt="..."/>
+                                <div className="card-body">
+                                    <h5 className="card-title">{pokemon.name}</h5>
+                                    <p className="card-text">Number: {pokemon.id}</p>
+                                    <a href="#" className="btn btn-primary">Go somewhere</a>
+                                </div>
                         </div>
                     ))
                 }
-            </>
+            </div>
         );
     }
 
